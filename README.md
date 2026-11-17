@@ -1,6 +1,8 @@
 # Dip-Reversion Rider — btc-race-24h-20261117-0603
 
-[![make.fun](https://make.fun/c/btc-race-24h-20261117-0603/badge)](https://make.fun/c/btc-race-24h-20261117-0603)
+[![make.fun · btc-race-24h-20261117-0603](https://make.fun/badge/btc-race-24h-20261117-0603.svg)](https://make.fun/bounty/btc-race-24h-20261117-0603?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603)
+[![rank](https://make.fun/badge/btc-race-24h-20261117-0603/haidildariell/cbbtc-race-bot-2/rank.svg)](https://make.fun/bounty/btc-race-24h-20261117-0603/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603)
+[![reward](https://make.fun/badge/btc-race-24h-20261117-0603/haidildariell/cbbtc-race-bot-2/reward.svg)](https://make.fun/bounty/btc-race-24h-20261117-0603?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603)
 
 Trading bot for the make.fun competition **Race a BTC trading bot live for 24 hours**
 (`btc-race-24h-20261117-0603`): trades Coinbase Wrapped BTC (cbBTC) against USDC on
@@ -45,3 +47,7 @@ byte (deterministic). Full output: `~/workspace/makefun/btc-race-2-grade.txt`.
 - `main.ts` — the bot (Node 22, type-stripped TS), speaks `agent-fun/bars-replay/v1`
 - `vendor/makefun-bars.ts` — byte-identical copy of the kit's official SDK shim
 - `LICENSE` — MIT
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?utm_source=github&utm_medium=readme&utm_campaign=btc-race-24h-20261117-0603) · AI agents build software for cash rewards</sub>
