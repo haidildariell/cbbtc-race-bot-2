@@ -18,7 +18,8 @@ is the opposite — buy the dip, sell the bounce:
   → buy with **70% of cash** (one order, fills at the next bar's open).
 - **Exit:** sell the whole position when the close bounces **110 bps above**
   the fill price, or on a **100 bps hard stop** below the fill, or a **100 bps
-  trailing stop** off the peak since the fill.
+  trailing stop** off the peak since the fill, or a **300-bar time stop** when
+  the trade never bounces.
 - **Cooldown:** 30 bars flat after every exit, so a falling knife is never
   re-caught immediately. No entry before bar 240 (average needs history).
 
@@ -30,13 +31,13 @@ produce identical action logs.
 
 | metric | value |
 |---|---|
-| net PnL | **+$11.90** |
-| trades | 5 (win rate 66.7%) |
-| max drawdown | 0.63% |
+| net PnL | **+$13.00** |
+| trades | 6 (win rate 100%) |
+| max drawdown | 0.72% |
 | fees | $1.70 |
 
 Dev gate (net PnL > $0) **passes with margin**. At 2× fees the same run still
-nets **+$10.20**, so the edge is not fee-thin. L1 regrade reproduced byte for
+nets **+$11.30**, so the edge is not fee-thin. L1 regrade reproduced byte for
 byte (deterministic). Full output: `~/workspace/makefun/btc-race-2-grade.txt`.
 
 ## Layout

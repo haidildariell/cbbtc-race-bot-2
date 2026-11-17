@@ -13,7 +13,8 @@
 //   - Long and the close has bounced TARGET_BPS above the fill price ->
 //     sell the whole position. A hard stop (STOP_BPS below the fill) and a
 //     trailing stop (TRAIL_BPS off the peak since the fill) cut the trades
-//     where the dip keeps dipping.
+//     where the dip keeps dipping; a 300-bar time stop exits a trade that
+//     never bounces, so no position is carried indefinitely.
 //   - After any exit, sit out COOLDOWN_BARS bars so a falling knife cannot
 //     be re-caught immediately.
 //
@@ -38,6 +39,9 @@ const TRAIL_BPS = 100n;
 const SIZE_BPS = 7000n;
 // Bars to sit out after an exit before buying again.
 const COOLDOWN_BARS = 30;
+// Longest a dip buy may be held: a trade that never bounces is exited flat
+// instead of being carried indefinitely into unseen bars.
+const TIME_STOP_BARS = 300;
 // Bars of history before the average is trusted enough to trade on.
 const MIN_HISTORY_BARS = 240;
 // Slippage allowance on every order, measured from the latest close (bps).
@@ -53,6 +57,8 @@ let ema60: bigint | null = null;
 // seen since that fill, for the trailing stop. Both reset on a sell fill.
 let fillPrice: bigint | null = null;
 let peakSinceFill: bigint | null = null;
+// First seq of the open position, for the time stop.
+let fillSeq: number | null = null;
 // First seq on which a new buy may be sent (cooldown after an exit).
 let buyAllowedFromSeq = 0;
 
@@ -79,9 +85,11 @@ await runBars({
       if (fill.side === 'buy') {
         fillPrice = BigInt(fill.price);
         peakSinceFill = fillPrice;
+        fillSeq = batch.seq;
       } else {
         fillPrice = null;
         peakSinceFill = null;
+        fillSeq = null;
         buyAllowedFromSeq = batch.seq + COOLDOWN_BARS;
       }
     }
@@ -111,7 +119,8 @@ await runBars({
     const takeProfit = gain >= TARGET_BPS;
     const stoppedOut = gain <= -STOP_BPS;
     const trailedOut = giveback >= TRAIL_BPS;
-    if (!takeProfit && !stoppedOut && !trailedOut) return [];
+    const timedOut = fillSeq !== null && batch.seq - fillSeq >= TIME_STOP_BARS;
+    if (!takeProfit && !stoppedOut && !trailedOut && !timedOut) return [];
     orders.push({ side: 'sell', symbol: SYMBOL, qty: held.qty, max_slippage_bps: MAX_SLIPPAGE_BPS });
     return orders;
   },
